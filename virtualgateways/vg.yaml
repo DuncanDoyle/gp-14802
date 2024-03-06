@@ -1,0 +1,18 @@
+apiVersion: networking.gloo.solo.io/v2
+kind: VirtualGateway
+metadata:
+  name: istio-ingressgateway
+  namespace: gloo-mesh-gateways
+spec:
+  listeners:
+    - http: {}
+      port:
+        number: 80
+      allowedRouteTables:
+        - host: api.example.com
+        - host: keycloak.example.com
+  workloads:
+  - selector:
+      labels:
+        istio: ingressgateway
+      cluster: gg-demo-single

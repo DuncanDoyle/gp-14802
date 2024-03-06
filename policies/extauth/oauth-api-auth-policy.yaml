@@ -1,0 +1,22 @@
+apiVersion: security.policy.gloo.solo.io/v2
+kind: ExtAuthPolicy
+metadata:
+  name: oauth-api-auth
+  namespace: default
+spec:
+  applyToRoutes:
+  - route:
+      labels:
+        oauth-ccg: "true"
+  config:
+    server:
+      name: ext-auth-server
+      namespace: gloo-mesh
+      cluster: gg-demo-single
+    glooAuth:
+      configs:
+        - oauth2:
+            accessTokenValidation:
+              jwt:
+                remoteJwks:
+                  url: http://keycloak.keycloak.svc.cluster.local/realms/master/protocol/openid-connect/certs
